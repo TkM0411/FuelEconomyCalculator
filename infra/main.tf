@@ -18,33 +18,20 @@ resource "aws_dynamodb_table" "fec-datastore" {
     }
 
     attribute {
-      name = "vehicle_type"
-      type = "S"
-    }
-
-    attribute {
       name = "refuel_date"
       type = "S"
     }
 
-    attribute {
-      name = "refuel_quantity_litres"
-      type = "N"
+    local_secondary_index {
+      name = "UserNameIndex"
+      projection_type = "ALL"
+      range_key = "refuel_date"
     }
 
-    attribute {
-      name = "odometer_reading_start"
-      type = "N"
-    }
-
-    attribute {
-      name = "odometer_reading_end"
-      type = "N"
-    }
-
-    attribute {
-      name = "fuel_economy"
-      type = "N"
+    local_secondary_index {
+      name = "RefuelDateIndex"
+      projection_type = "ALL"
+      range_key = "user_name"
     }
 
     tags = merge({
