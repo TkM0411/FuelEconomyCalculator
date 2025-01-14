@@ -41,7 +41,7 @@ resource "aws_dynamodb_table" "fec_datastore" {
 
 #CognitoUserPool
 resource "aws_cognito_user_pool" "fec_userpool" {
-  name = "${env.environment}-fec-user-pool"
+  name = "${var.environment}-fec-user-pool"
   password_policy {
     minimum_length = 8
     password_history_size = 3
