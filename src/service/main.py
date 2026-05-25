@@ -18,7 +18,7 @@ DynamoDB table schema
 Environment variables
 ---------------------
   DYNAMODB_TABLE      FuelEntries          (required)
-  AWS_REGION          ap-south-1           (default)
+  AWS_REGION          us-east-1           (default)
   AWS_ACCESS_KEY_ID   <your key>           (or use IAM role / instance profile)
   AWS_SECRET_ACCESS_KEY <your secret>
   DYNAMODB_ENDPOINT   http://dynamodb:8000 (only for local DynamoDB Local)
