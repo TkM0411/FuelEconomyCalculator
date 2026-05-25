@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FuelTrack</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">⛽ FuelTrack<span class="dot">.</span></div>
+  <div class="nav-right">
+    <span class="user-badge">TkM</span>
+    <button class="btn-logout" onclick="handleLogout()">Logout</button>
+    <button class="btn-secondary" style="padding:4px 10px;font-size:.72rem" onclick="openConfig()">⚙ API Config</button>
+  </div>
+</nav>
+
+<div class="main">
+
+  <!-- STATS STRIP -->
+  <div class="stats-strip">
+    <div class="stat-card">
+      <div class="stat-label">Total Entries</div>
+      <div class="stat-value green" id="stat-entries">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Total Fuel (L)</div>
+      <div class="stat-value" id="stat-fuel">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Total Cost (₹)</div>
+      <div class="stat-value yellow" id="stat-cost">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Avg Economy</div>
+      <div class="stat-value green" id="stat-econ">—</div>
+    </div>
+  </div>
+
+  <!-- ADD ENTRY CARD -->
+  <div class="card">
+    <div class="card-title">Add Refueling Entry</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Vehicle</label>
+        <select id="vehicle">
+          <option value="Two-Wheeler">Two-Wheeler</option>
+          <option value="Four-Wheeler">Four-Wheeler</option>
+          <option value="Three-Wheeler">Three-Wheeler</option>
+          <option value="Heavy Vehicle">Heavy Vehicle</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Date</label>
+        <input type="date" id="date" />
+      </div>
+      <div class="form-group">
+        <label>Trip Kilometres</label>
+        <input type="number" id="tripKm" placeholder="e.g. 350" min="0" step="0.1"/>
+      </div>
+    </div>
+    <div class="form-row2">
+      <div class="form-group">
+        <label>Fuel (L)</label>
+        <input type="number" id="fuel" placeholder="e.g. 10.5" min="0" step="0.01"/>
+      </div>
+      <div class="form-group">
+        <label>Cost (₹)</label>
+        <input type="number" id="cost" placeholder="e.g. 950" min="0" step="0.01"/>
+      </div>
+      <button class="btn-primary" id="addBtn" onclick="handleAddEntry()">
+        <span class="spinner"></span>
+        <span class="btn-text">+ Add Entry</span>
+      </button>
+    </div>
+    <div class="api-status" id="apiStatus">
+      <span class="dot"></span> <span id="apiStatusText">Not connected to backend</span>
+    </div>
+  </div>
+
+  <!-- HISTORY CARD -->
+  <div class="card">
+    <div class="table-header">
+      <div class="card-title" style="margin:0">Refueling History</div>
+      <div class="filter-row">
+        <select id="filterVehicle" onchange="applyFilters()">
+          <option value="">All Vehicles</option>
+          <option value="Two-Wheeler">Two-Wheeler</option>
+          <option value="Four-Wheeler">Four-Wheeler</option>
+          <option value="Three-Wheeler">Three-Wheeler</option>
+          <option value="Heavy Vehicle">Heavy Vehicle</option>
+        </select>
+        <input type="month" id="filterMonth" onchange="applyFilters()" style="width:auto"/>
+        <button class="btn-export" onclick="exportCSV()">↓ Export CSV</button>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Vehicle</th>
+            <th>Trip Km</th>
+            <th>Fuel (L)</th>
+            <th>Cost (₹)</th>
+            <th>Economy (km/L)</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="historyBody"></tbody>
+      </table>
+      <div class="empty-state" id="emptyState">
+        <div class="icon">⛽</div>
+        <div>No refueling entries yet.</div>
+        <div style="margin-top:4px;font-size:.78rem">Add your first entry above.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- API CONFIG MODAL -->
+<div class="modal-overlay" id="configModal">
+  <div class="modal">
+    <h3>⚙ Backend API Configuration</h3>
+    <div class="form-group" style="margin-bottom:1rem">
+      <label>API Base URL</label>
+      <input type="text" id="cfgBaseUrl" placeholder="https://your-api.amazonaws.com/prod"/>
+    </div>
+    <div class="form-group" style="margin-bottom:1rem">
+      <label>API Key (x-api-key header)</label>
+      <input type="password" id="cfgApiKey" placeholder="Optional: your API Gateway key"/>
+    </div>
+    <div class="form-group">
+      <label>Username / UserID</label>
+      <input type="text" id="cfgUserId" value="TkM"/>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeConfig()">Cancel</button>
+      <button class="btn-primary" onclick="saveConfig()" style="padding:8px 20px">
+        <span class="btn-text">Save & Test</span>
+      </button>
+    </div>
+  </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
