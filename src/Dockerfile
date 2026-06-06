@@ -2,7 +2,7 @@
 # Stage 1 — dependency builder
 # Uses a full Python image so pip can compile any C-extension wheels.
 # ──────────────────────────────────────────────────────────────────
-FROM python:slim-trixie AS builder
+FROM python:3.13-slim AS builder
 WORKDIR /build
 # Install build tools needed for any compiled dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -10,14 +10,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
-
+RUN pip install --upgrade pip setuptools wheel
 # Install into an isolated prefix so we can copy only the libs
 RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
 # ──────────────────────────────────────────────────────────────────
 # Stage 2 — lean runtime image
 # ──────────────────────────────────────────────────────────────────
-FROM python:slim-trixie AS runtime
+FROM python:3.13-slim AS runtime
 LABEL Product="FuelTrackAPI"
 LABEL Version="0.0.1"
 LABEL Maintainer="TkM"
