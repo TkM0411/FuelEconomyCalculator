@@ -1,9 +1,9 @@
 name: BuildAPI
 on:
-  workflow_dispatch:
   push:
     branches:
       - master
+      - feature/*
   jobs:
     build:
       runs-on: ubuntu-latest
