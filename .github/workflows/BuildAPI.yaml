@@ -22,7 +22,7 @@ jobs:
         with:
           version: latest
           name: MultiArchBuilder
-          platforms: [ linux/amd64,linux/arm64 ]
+          platforms: linux/amd64,linux/arm64
       - name: Build and Push Image
         uses: docker/build-push-action@v7
         with:
