@@ -31,7 +31,7 @@ WORKDIR /app
 COPY --from=builder /install /usr/local
 
 # Copy application source
-COPY service/main.py .
+COPY ./service/main.py .
 
 # Switch to non-root user
 USER appuser
